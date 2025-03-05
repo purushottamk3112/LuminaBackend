@@ -1,6 +1,6 @@
 fastapi==0.110.0
 uvicorn==0.29.0
-openai-whisper==1.1.10  # Changed from 'whisper'
+whisper @ git+https://github.com/openai/whisper.git  # Official package
 pydub==0.25.1
 python-multipart==0.0.9
 python-dotenv==1.0.1
