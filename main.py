@@ -1,19 +1,19 @@
 from fastapi import FastAPI, File, UploadFile, HTTPException
 from fastapi.responses import JSONResponse
 from pydub import AudioSegment
-import whisper
+import whisper  # Correct import from official package
 import os
 import tempfile
 
 app = FastAPI()
 
-# Load the Whisper model
-model = whisper.load_model("small")  # Now using correct package
+# Load model at startup
+model = whisper.load_model("small")
 
 @app.post("/transcribe/")
 async def transcribe_audio(file: UploadFile = File(...)):
     try:
-        # Create temporary file
+        # Save uploaded file temporarily
         with tempfile.NamedTemporaryFile(delete=False, suffix=".webm") as tmp:
             content = await file.read()
             tmp.write(content)
@@ -31,7 +31,7 @@ async def transcribe_audio(file: UploadFile = File(...)):
         os.unlink(tmp_path)
         os.unlink(wav_path)
 
-        return JSONResponse(content={"transcription": result["text"]})
+        return {"transcription": result["text"]}
 
     except Exception as e:
         raise HTTPException(status_code=500, detail=str(e))
